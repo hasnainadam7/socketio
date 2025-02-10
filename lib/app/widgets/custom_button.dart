@@ -25,7 +25,9 @@ class CustomCircularButton extends StatelessWidget {
     super.key,
     this.borderColor,
     this.corners = 99,
-    this.elevation = 0,  this.labelSize=20,this.labelWeight = FontWeight.w600,
+    this.elevation = 0,
+    this.labelSize = 20,
+    this.labelWeight = FontWeight.w600,
   });
 
   @override
@@ -75,7 +77,7 @@ class CustomCircularButton extends StatelessWidget {
                 const SizedBox(width: 8),
               ],
               Poppins(
-                weight:labelWeight,
+                weight: labelWeight,
                 label: btnLabel,
                 size: labelSize,
                 color: !isPrimaryColor
