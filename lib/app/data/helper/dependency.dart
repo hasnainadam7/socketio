@@ -1,8 +1,8 @@
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../data/client_api.dart';
-import '../utils/constants.dart';
+import '../../utils/constants.dart';
+import '../api/client_api.dart';
 
 Future<void> init() async {
   // Obtain shared preferences.
