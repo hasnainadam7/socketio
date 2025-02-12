@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+
 import 'package:scoketio/app/utils/colors.dart';
 import 'package:scoketio/app/widgets/custom_app_bar.dart';
 import 'package:scoketio/app/widgets/custom_button.dart';
@@ -6,10 +8,43 @@ import 'package:scoketio/app/widgets/custom_text_field.dart';
 import 'package:scoketio/app/widgets/scaffold_body.dart';
 import 'package:scoketio/app/widgets/texts/poppins.dart';
 
+import '../data/controllers/auth_repo_controller.dart';
+import '../widgets/snackbar_widget.dart';
+
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passController = TextEditingController();
+
+  Future<void> _login(context) async {
+    String password = passController.text.trim();
+    String email = emailController.text.trim();
+    //
+
+    if (email.isEmpty || password.length < 6 || !GetUtils.isEmail(email) ) {
+      CustomSnackbar.showSnackbar(description: "Please fill the box Correctly");
+    } else {
+      await Get.find<AuthRepoController>()
+          .login(email, password)
+          .then((status) async {
+        if (status.success) {
+          CustomSnackbar.showSnackbar(
+              description: status.message,
+              isError: !status.success,
+              title: "Welcome");
+
+
+          // await Get.find<AuthRepoController>().getUser();
+          // await Get.find<UserRepoController>().getUserInfo();
+
+          // Navigator.pushReplacementNamed(context, Routeshelper.getFoodHomePageRoute(0));
+        } else {
+          CustomSnackbar.showSnackbar(description: status.message.toString());
+        }
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -67,7 +102,9 @@ class SignInPage extends StatelessWidget {
               height: 20,
             ),
             CustomCircularButton(
-              callbackAction: () {},
+              callbackAction: ()async {
+                _login(context);
+              },
               btnLabel: "Sign in",
               isPrimaryColor: true,
               corners: 10,
@@ -75,7 +112,7 @@ class SignInPage extends StatelessWidget {
             CustomCircularButton(
                 labelSize: 14,
                 labelWeight: FontWeight.w500,
-                callbackAction: () {},
+                callbackAction: ()async {},
                 btnLabel: "Create new account"),
           ],
         ),

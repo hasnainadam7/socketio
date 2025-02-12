@@ -16,7 +16,7 @@ dependencies:
   get: ^4.6.6
   flutter_dotenv: ^5.2.1
   flutter_svg: ^2.0.17
-  shared_preferences: ^2.5.1
+  flutter_secure_storage: ^9.2.4
 
 
 

@@ -54,7 +54,7 @@ class onBoardingPage extends StatelessWidget {
                           elevation: 3,
                           corners: 10,
                           isPrimaryColor: true,
-                          callbackAction: () {},
+                          callbackAction: () async{},
                           btnLabel: "Login"),
                     ),
                     const SizedBox(
@@ -64,7 +64,7 @@ class onBoardingPage extends StatelessWidget {
                       // Ensures the button fits within the Row
                       child: CustomCircularButton(
                           corners: 10,
-                          callbackAction: () {},
+                          callbackAction: () async{},
                           btnLabel: "Register",),
                     ),
                   ],

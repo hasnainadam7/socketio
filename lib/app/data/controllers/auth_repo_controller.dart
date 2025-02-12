@@ -1,51 +1,46 @@
-import 'package:get/get.dart';
+import 'dart:convert';
 
+import 'package:get/get.dart';
+import 'package:scoketio/app/utils/configs.dart';
 import '../models/response_model.dart';
 import '../models/users_models.dart';
-import '../repositories/auth_repo_controller.dart';
+import '../repositories/auth_repo.dart';
 
 class AuthRepoController extends GetxController implements GetxService {
   AuthRepo authRepo;
+  late UsersModel _usersModels;
+  UsersModel get userModel => _usersModels;
 
   AuthRepoController({required this.authRepo});
 
-  bool _isLoading = false;
-  bool get isLoading => _isLoading;
-
-  Future<ResponseModel> registration(
-    User registration,
-  ) async {
-    _isLoading = true;
-    Response res = await authRepo.registraion(registration);
-
+  Future<ResponseModel> registration(UsersModel registration) async {
+    Response res = await authRepo.registration(registration);
     late ResponseModel responseModel;
     if (res.statusCode == 200) {
-      authRepo.saveToken(res.body["token"]);
+      saveToken(res.body["token"]);
+
       responseModel = ResponseModel(true, res.body["token"]);
     } else {
       responseModel = ResponseModel(false,
           res.statusText! + res.status.toString() + res.statusCode.toString());
     }
-
-    _isLoading = false;
-    print(responseModel.message);
     update();
     return responseModel;
   }
 
   Future<ResponseModel> login(String email, password) async {
-    _isLoading = true;
     Response res = await authRepo.login(email, password);
     late ResponseModel responseModel;
-    if (res.statusCode == 200) {
-      authRepo.saveToken(res.body["token"]);
 
-      responseModel = ResponseModel(true, res.body["token"]);
+    if (res.statusCode == 200) {
+      await authRepo.saveToken(res.body["data"]["accessToken"]);
+
+      _usersModels = UsersModel.fromMap(res.body["data"]["fetchedUser"]);
+
+      responseModel = ResponseModel(true, res.statusText!);
     } else {
-      responseModel = ResponseModel(false,
-          res.statusText! + res.status.toString() + res.statusCode.toString());
+      responseModel = ResponseModel(false, res.bodyString!);
     }
-    _isLoading = false;
 
     update();
     return responseModel;
@@ -56,17 +51,23 @@ class AuthRepoController extends GetxController implements GetxService {
     update();
   }
 
+  Future<UsersModel> getUser(String token) async {
 
-
-  bool isUserLoggedIn() {
-    return authRepo.isUserLoggedIn();
+    Response res = await authRepo.getUser(token);
+    UsersModel usersModels = UsersModel.fromMap(res.body["data"]["user"]);
+    return usersModels;
   }
 
-  void intializedToken() {
-    if (isUserLoggedIn()) {}
+  Future<bool> saveToken(String token) async {
+    return await authRepo.saveToken(token);
   }
 
-  Future<String> getToken() async {
-    return await authRepo.getToken();
+  checkUserIfLogin(){
+    authRepo.refreshUser();
+    //checkTokenAccess
+    //validate it if its expire or not
+    //refresh it via
+
   }
+
 }

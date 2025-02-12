@@ -4,11 +4,12 @@ import '../utils/colors.dart';
 import 'styles.dart';
 
 class CustomTextField extends StatefulWidget {
-  const CustomTextField(
-      {super.key,
-      required this.textEditingController,
-      required this.hintText,
-      this.obscureText = false});
+  const CustomTextField({
+    super.key,
+    required this.textEditingController,
+    required this.hintText,
+    this.obscureText = false,
+  });
   final TextEditingController textEditingController;
   final String hintText;
   final bool obscureText;

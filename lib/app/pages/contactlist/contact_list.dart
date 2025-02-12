@@ -1,47 +1,62 @@
 import 'package:flutter/material.dart';
 
-
 import '../../data/models/users_models.dart';
 import '../../utils/colors.dart';
 import '../../widgets/circular_container.dart';
 import '../../widgets/texts/poppins.dart';
 
-final List<User> users = [
-  User(
-    name: "Athalia Putri",
-    status: "Last seen yesterday",
-    imagePath: "assets/images/dp1.png",
-    isOnline: false,
+final List<UsersModel> users = [
+  UsersModel(
+    id: '1',
+    username: 'ads',
+    email: 'dasdasd',
+    fullname: 'Athalia Putri',
+    avatar: 'assets/images/dp1.png',
+    coverImage: '',
+    role: '',
+    watchHistory: [],
+
   ),
-  User(
-    name: "Erlan Sadewa",
-    status: "Online",
-    imagePath: "assets/images/dp2.png",
-    isOnline: true,
-  ),
-  User(
-    name: "Midala Huera",
-    status: "Last seen 3 hours ago",
-    imagePath: "assets/images/dp3.png",
-    isOnline: false,
-  ),
-  User(
-    name: "Nafisa Gitari",
-    status: "Online",
-    imagePath: "assets/images/dp4.png",
-    isOnline: true,
-  ),
-  User(
-    name: "Raki Devon",
-    status: "Online",
-    imagePath: "assets/images/dp5.png",
-    isOnline: true,
-  ),
-  User(
-    name: "Salsabila Akira",
-    status: "Last seen 30 minutes ago",
-    imagePath: "assets/images/dp6.png",
-    isOnline: false,
+  UsersModel(
+    id: '1',
+    username: 'ads',
+    email: 'dasdasd',
+    fullname: 'Athalia Putri',
+    avatar: 'assets/images/dp1.png',
+    coverImage: '',
+    role: '',
+    watchHistory: [],
+
+  ),  UsersModel(
+    id: '1',
+    username: 'ads',
+    email: 'dasdasd',
+    fullname: 'Athalia Putri',
+    avatar: 'assets/images/dp1.png',
+    coverImage: '',
+    role: '',
+    watchHistory: [],
+
+  ),  UsersModel(
+    id: '1',
+    username: 'ads',
+    email: 'dasdasd',
+    fullname: 'Athalia Putri',
+    avatar: 'assets/images/dp1.png',
+    coverImage: '',
+    role: '',
+    watchHistory: [],
+
+  ),  UsersModel(
+    id: '1',
+    username: 'ads',
+    email: 'dasdasd',
+    fullname: 'Athalia Putri',
+    avatar: 'assets/images/dp1.png',
+    coverImage: '',
+    role: '',
+    watchHistory: [],
+
   ),
 ];
 
@@ -64,12 +79,12 @@ class UserListView extends StatelessWidget {
                     children: [
                       CircularContainer(
                         child: Image.asset(
-                          user.imagePath,
+                          user.avatar,
                           height: 50,
                           width: 50,
                         ),
                       ),
-                      if (user.isOnline)
+                      if (true)
                         Positioned(
                           top: -2,
                           right: -2,
@@ -90,20 +105,22 @@ class UserListView extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Poppins(
-                        label: user.name,
+                        label: user.fullname,
                         size: 18,
                       ),
                       Poppins(
-                        label: user.status,
+                        label: user.username,
                         size: 12,
                         color: AppColors.greyColor,
                       ),
                     ],
                   ),
-
                 ],
               ),
-              const Divider(color: AppColors.greyColor,thickness: 0.5,)
+              const Divider(
+                color: AppColors.greyColor,
+                thickness: 0.5,
+              )
             ],
           ),
         );

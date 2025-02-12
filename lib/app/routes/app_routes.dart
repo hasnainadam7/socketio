@@ -1,9 +1,11 @@
 part of 'app_pages.dart';
 
 abstract class _Paths {
-
   static const onBoardingscreen = "/onBoardingscreen";
 
+  static const signInScreen = "/signInScreen";
+  static const signUpScreen = "/signUpScreen";
+  static const contactListScreen = "/contactListScreen";
 }
 
 abstract class Routes {
@@ -11,4 +13,7 @@ abstract class Routes {
 
   static const onBoardingscreen = _Paths.onBoardingscreen;
 
+  static const signInScreen = _Paths.signInScreen;
+  static const signUpScreen = _Paths.signUpScreen;
+  static const contactListScreen = _Paths.contactListScreen;
 }
