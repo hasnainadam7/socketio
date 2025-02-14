@@ -58,9 +58,7 @@ class SignInPage extends StatelessWidget {
               color: AppColors.primaryColor,
               weight: FontWeight.w700,
             ),
-            const SizedBox(
-              height: 10,
-            ),
+            const SizedBox(height: 10),
             const Poppins(
               label: "Welcome back you’ve\n been missed!",
               size: 20,
@@ -68,24 +66,18 @@ class SignInPage extends StatelessWidget {
               align: TextAlign.center,
               weight: FontWeight.w600,
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             CustomTextField(
               textEditingController: emailController,
               hintText: 'Email',
             ),
-            const SizedBox(
-              height: 30,
-            ),
+            const SizedBox(height: 30),
             CustomTextField(
               textEditingController: passController,
               hintText: 'Password',
               obscureText: true,
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             const Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
@@ -98,11 +90,9 @@ class SignInPage extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(
-              height: 20,
-            ),
+            const SizedBox(height: 20),
             CustomCircularButton(
-              callbackAction: ()async {
+              callbackAction: () async {
                 _login(context);
               },
               btnLabel: "Sign in",
@@ -110,13 +100,15 @@ class SignInPage extends StatelessWidget {
               corners: 10,
             ),
             CustomCircularButton(
-                labelSize: 14,
-                labelWeight: FontWeight.w500,
-                callbackAction: ()async {},
-                btnLabel: "Create new account"),
+              labelSize: 14,
+              labelWeight: FontWeight.w500,
+              callbackAction: () async {},
+              btnLabel: "Create new account",
+            ),
           ],
         ),
       ),
     );
   }
+
 }

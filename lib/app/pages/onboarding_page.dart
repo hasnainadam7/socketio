@@ -8,7 +8,6 @@ import '../widgets/custom_app_bar.dart';
 import '../widgets/custom_button.dart';
 import '../widgets/texts/poppins.dart';
 
-// ignore: camel_case_types
 class onBoardingPage extends StatelessWidget {
   const onBoardingPage({super.key});
 
@@ -54,7 +53,7 @@ class onBoardingPage extends StatelessWidget {
                           elevation: 3,
                           corners: 10,
                           isPrimaryColor: true,
-                          callbackAction: () async{},
+                          callbackAction: () async {},
                           btnLabel: "Login"),
                     ),
                     const SizedBox(
@@ -63,9 +62,10 @@ class onBoardingPage extends StatelessWidget {
                     Expanded(
                       // Ensures the button fits within the Row
                       child: CustomCircularButton(
-                          corners: 10,
-                          callbackAction: () async{},
-                          btnLabel: "Register",),
+                        corners: 10,
+                        callbackAction: () async {},
+                        btnLabel: "Register",
+                      ),
                     ),
                   ],
                 )

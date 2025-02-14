@@ -1,7 +1,5 @@
-import 'dart:convert';
-
 import 'package:get/get.dart';
-import 'package:scoketio/app/utils/configs.dart';
+
 import '../models/response_model.dart';
 import '../models/users_models.dart';
 import '../repositories/auth_repo.dart';
@@ -12,6 +10,12 @@ class AuthRepoController extends GetxController implements GetxService {
   UsersModel get userModel => _usersModels;
 
   AuthRepoController({required this.authRepo});
+
+  @override
+  Future<void> onInit() async {
+    super.onInit();
+    await loadUser();
+  }
 
   Future<ResponseModel> registration(UsersModel registration) async {
     Response res = await authRepo.registration(registration);
@@ -33,13 +37,14 @@ class AuthRepoController extends GetxController implements GetxService {
     late ResponseModel responseModel;
 
     if (res.statusCode == 200) {
-      await authRepo.saveToken(res.body["data"]["accessToken"]);
+      await authRepo.saveToken(res.body["data"]["dbRefreshToken"]);
 
       _usersModels = UsersModel.fromMap(res.body["data"]["fetchedUser"]);
+      _usersModels.copyWith(accessToken: res.body["data"]["accessToken"]);
 
-      responseModel = ResponseModel(true, res.statusText!);
+      responseModel = ResponseModel(res.body["success"], res.statusText!);
     } else {
-      responseModel = ResponseModel(false, res.bodyString!);
+      responseModel = ResponseModel(res.body["success"], res.bodyString!);
     }
 
     update();
@@ -51,23 +56,39 @@ class AuthRepoController extends GetxController implements GetxService {
     update();
   }
 
-  Future<UsersModel> getUser(String token) async {
-
+  Future<void> getUser(String token) async {
     Response res = await authRepo.getUser(token);
-    UsersModel usersModels = UsersModel.fromMap(res.body["data"]["user"]);
-    return usersModels;
+
+    _usersModels = UsersModel.fromMap(res.body["data"]["user"]);
+    _usersModels = _usersModels.copyWith(accessToken: token);
+    update();
   }
 
   Future<bool> saveToken(String token) async {
     return await authRepo.saveToken(token);
   }
 
-  checkUserIfLogin(){
-    authRepo.refreshUser();
-    //checkTokenAccess
-    //validate it if its expire or not
-    //refresh it via
+  Future<ResponseModel> loadUser() async {
 
+    try {
+
+      Response res = await authRepo.refreshTokens();
+
+      late ResponseModel responseModel;
+
+      if (res.statusCode! > 199 && res.statusCode! < 300) {
+        responseModel = ResponseModel(res.body["success"], res.body["message"]);
+
+        await authRepo.saveToken(res.body["data"]["dbRefreshToken"]);
+
+        await getUser(res.body["data"]["accessToken"]);
+      } else {
+        responseModel = ResponseModel(res.body["success"], res.body["message"]);
+      }
+
+      return responseModel;
+    } catch (e) {
+      return ResponseModel(false, "Error : $e");
+    }
   }
-
 }

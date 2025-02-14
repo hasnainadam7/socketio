@@ -1,7 +1,5 @@
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:get/get_connect/http/src/response/response.dart';
-import 'package:scoketio/app/data/models/response_model.dart';
-import 'package:scoketio/app/utils/configs.dart';
 import '../../utils/constants.dart';
 import '../api/client_api.dart';
 import '../models/users_models.dart';
@@ -19,6 +17,7 @@ class AuthRepo {
     );
   }
 
+  //done
   Future<Response> login(String email, String password) async {
     return await apiClient.postData(
         Constants.authLoginApi, {"Email": email, "Password": password});
@@ -30,38 +29,47 @@ class AuthRepo {
     apiClient.updateToken("");
   }
 
+  //done but waiting for check on registration
   Future<bool> saveToken(String token) async {
-    apiClient.token = token;
-    apiClient.updateToken(token);
-    await secureStorage.write(key: Constants.token, value: token);
-    return true;
+    try {
+      apiClient.token = token;
+      apiClient.updateToken(token);
+      await secureStorage.write(key: Constants.token, value: token);
+      return true;
+    } catch (e) {
+      return false;
+    }
   }
-  //
-  // Future<String?> getToken() async {
-  //   return await secureStorage.read(key: Constants.token);
+
+  //done
+  // Future<bool> isUserLoggedIn() async {
+  //   String? token = await secureStorage.read(key: Constants.token);
+  //   return token != null;
   // }
 
-  Future<bool> isUserLoggedIn() async {
-    String? token = await secureStorage.read(key: Constants.token);
-    return token != null;
-  }
-
+  //done
   Future<Response> getUser(String token) async {
     Response res = await apiClient
-        .postData(Constants.authFetchLoggedUserApi, {"accessToken": token});
+        .postData(Constants.authFetchLoggedUserApi, {"refreshToken": token});
+
+
     return res;
   }
 
-  Future<Response> refreshUser() async {
-    String token = await secureStorage.read(key: Constants.token) ?? "";
+  Future<String> getToken() async {
+    return await secureStorage.read(key: Constants.token) ?? "";
+  }
 
+  //done
+  Future<Response> refreshTokens() async {
+    String token = await getToken();
     if (token.isEmpty) {
       return const Response(
           statusCode: 400, statusText: "Unauthorized Request");
     }
     Response res = await apiClient
         .postData(Constants.authRefreshUser, {"refreshToken": token});
-    printApiResponse(res.body);
+
     return res;
   }
 }

@@ -1,14 +1,15 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:scoketio/app/utils/colors.dart';
-import 'package:scoketio/app/widgets/custom_search_field.dart';
-import 'package:scoketio/app/widgets/scaffold_body.dart';
-import 'package:scoketio/app/widgets/texts/poppins.dart';
 
+import '../../utils/colors.dart';
+import '../../widgets/custom_search_field.dart';
+import '../../widgets/scaffold_body.dart';
+import '../../widgets/texts/poppins.dart';
 import 'contact_list.dart';
 
 class ContactPage extends StatelessWidget {
   ContactPage({super.key});
+
   final TextEditingController searchController = TextEditingController();
 
   @override
@@ -33,16 +34,12 @@ class ContactPage extends StatelessWidget {
                   )
                 ],
               ),
-              const SizedBox(
-                height: 40,
-              ),
+              const SizedBox(height: 40),
               CustomSearchField(
                 searchController: searchController,
                 filterSearch: (String a) {},
               ),
-              const SizedBox(
-                height: 10,
-              ),
+              const SizedBox(height: 10),
               const Expanded(child: UserListView()),
             ],
           ),

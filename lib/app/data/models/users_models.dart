@@ -4,11 +4,11 @@ class UsersModel {
   final String email;
   final String fullname;
   final String avatar;
-  final String? coverImage;// Now optional
+  final String? coverImage; // Now optional
   final String role;
-  final String? accessToken;// Now optional
+  final String? accessToken; // Now optional
   final List<String> watchHistory;
-  final String? password;// Now optional
+  final String? password; // Now optional
 
   UsersModel({
     this.id, // Optional now
@@ -57,18 +57,18 @@ class UsersModel {
     return 'User(id: $id, username: $username, email: $email, accessToken: $accessToken, fullname: $fullname, avatar: $avatar, coverImage: $coverImage, role: $role, watchHistory: $watchHistory)';
   }
 
-  UsersModel copyWith(
-      {String? id,
-      String? username,
-      String? email,
-      String? fullname,
-      String? avatar,
-      String? coverImage,
-      String? role,
-
-      String? accessToken,
-      List<String>? watchHistory,
-      String? password}) {
+  UsersModel copyWith({
+    String? id,
+    String? username,
+    String? email,
+    String? fullname,
+    String? avatar,
+    String? coverImage,
+    String? role,
+    String? accessToken,
+    List<String>? watchHistory,
+    String? password,
+  }) {
     return UsersModel(
       id: id ?? this.id,
       username: username ?? this.username,
