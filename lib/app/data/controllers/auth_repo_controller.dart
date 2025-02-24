@@ -1,4 +1,6 @@
 import 'package:get/get.dart';
+import 'package:scoketio/app/data/controllers/chat_repo_controller.dart';
+import 'package:scoketio/app/utils/configs.dart';
 
 import '../models/response_model.dart';
 import '../models/users_models.dart';
@@ -33,22 +35,27 @@ class AuthRepoController extends GetxController implements GetxService {
   }
 
   Future<ResponseModel> login(String email, password) async {
-    Response res = await authRepo.login(email, password);
-    late ResponseModel responseModel;
+    try {
+      Response res = await authRepo.login(email, password);
+      late ResponseModel responseModel;
+      printApiResponse(res.body);
 
-    if (res.statusCode == 200) {
-      await authRepo.saveToken(res.body["data"]["dbRefreshToken"]);
+      if (res.statusCode == 200) {
+        await authRepo.saveToken(res.body["data"]["dbRefreshToken"]);
 
-      _usersModels = UsersModel.fromMap(res.body["data"]["fetchedUser"]);
-      _usersModels.copyWith(accessToken: res.body["data"]["accessToken"]);
+        _usersModels = UsersModel.fromMap(res.body["data"]["fetchedUser"]);
+        _usersModels.copyWith(accessToken: res.body["data"]["accessToken"]);
+        await loadUser();
+        responseModel = ResponseModel(res.body["success"], res.statusText!);
+      } else {
+        responseModel = ResponseModel(res.body["success"], res.bodyString!);
+      }
 
-      responseModel = ResponseModel(res.body["success"], res.statusText!);
-    } else {
-      responseModel = ResponseModel(res.body["success"], res.bodyString!);
+      update();
+      return responseModel;
+    } catch (e) {
+      rethrow;
     }
-
-    update();
-    return responseModel;
   }
 
   void signOut() {
@@ -68,10 +75,13 @@ class AuthRepoController extends GetxController implements GetxService {
     return await authRepo.saveToken(token);
   }
 
+  Future<void> removeToken() async {
+    await authRepo.removeToken();
+    Get.find<ChatRepoController>().disconnectSocket();
+  }
+
   Future<ResponseModel> loadUser() async {
-
     try {
-
       Response res = await authRepo.refreshTokens();
 
       late ResponseModel responseModel;

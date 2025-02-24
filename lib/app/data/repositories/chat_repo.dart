@@ -14,7 +14,18 @@ class ChatRepo {
         .postData(Constants.chatGetAllGroupChats, {"accessToken": token});
   }
 
-  // Future<Response> getUser(String token) async {
+  Future<Response> loadChat(String token, groupId) async {
+    return await apiClient.postData(Constants.chatFetchChatMessages,
+        {"accessToken": token, "groupId": groupId});
+  }
+
+  Future<Response> sendMessage(
+      Map<String, dynamic> requestData, String token) async {
+    return await apiClient.postData(Constants.chatSendChatMessages,
+        {"requestData": requestData, "accessToken": token});
+  }
+
+// Future<Response> getUser(String token) async {
   //   Response res = await apiClient
   //       .postData(Constants.authFetchLoggedUserApi, {"accessToken": token});
   //   // printApiResponse(res.body);

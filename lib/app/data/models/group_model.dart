@@ -22,14 +22,22 @@ class Group {
       id: documentId,
       groupTitle: map['GroupTitle'] ?? '',
       groupIcon: map['GroupIcon'] ?? '',
-      groupUsers: (map['GroupUsers'] as List<dynamic>? ?? [])
-          .map((user) => GroupUser.fromMap(user))
+      groupUsers: (map['GroupUsersDetails'] as List<dynamic>? ?? [])
+          .map((user) => GroupUser.fromMap({
+                'userID': user['_id'] ?? '',
+                'isAdmin': user['isAdmin'] ?? false,
+              }))
           .toList(),
-      listOfMessages: (map['listOfMessages'] as List<dynamic>? ?? [])
-          .map((msg) => Message.fromMap(msg))
-          .toList(),
-      createdAt: map['createdAt'] ?? DateTime.now(),
-      updatedAt: map['updatedAt'] ?? DateTime.now(),
+      listOfMessages: map['latestMessage'] != null
+          ? [Message.fromMap(map['latestMessage'])] // Wrap in a list
+          : [],
+      // listOfMessages: ,
+      createdAt: map['createdAt'] != null
+          ? DateTime.parse(map['createdAt'])
+          : DateTime.now(),
+      updatedAt: map['updatedAt'] != null
+          ? DateTime.parse(map['updatedAt'])
+          : DateTime.now(),
     );
   }
 
@@ -118,16 +126,27 @@ class Message {
   });
 
   factory Message.fromMap(Map<String, dynamic> map) {
-    return Message(
-      sender: map['sender'] ?? '',
-      message: map['message'] ?? '',
-      imageUrl: List<String>.from(map['imageUrl'] ?? []),
-      videoUrl: List<String>.from(map['videoUrl'] ?? []),
-      date: map['date'] ?? DateTime.now(),
-      isEdited: map['isEdited'] ?? false,
-      isDeletedToAll: map['isDeletedToAll'] ?? false,
-      isDeletedOnlyMe: map['isDeletedOnlyMe'] ?? false,
-    );
+    try {
+
+
+
+
+
+      return Message(
+        sender:   map['sender'] is Map<String, dynamic>
+        ? map['sender']['_id'] ?? ''
+          : map['sender'] ?? '',
+        message: map['message'] ?? '',
+        imageUrl: List<String>.from(map['imageUrl'] ?? []),
+        videoUrl: List<String>.from(map['videoUrl'] ?? []),
+        date: DateTime.parse(map['date']) ,
+        isEdited: map['isEdited'] ?? false,
+        isDeletedToAll: map['isDeletedToAll'] ?? false,
+        isDeletedOnlyMe: map['isDeletedOnlyMe'] ?? false,
+      );
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Map<String, dynamic> toMap() {

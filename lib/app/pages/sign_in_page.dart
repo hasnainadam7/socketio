@@ -9,7 +9,9 @@ import 'package:scoketio/app/widgets/scaffold_body.dart';
 import 'package:scoketio/app/widgets/texts/poppins.dart';
 
 import '../data/controllers/auth_repo_controller.dart';
+import '../data/controllers/chat_repo_controller.dart';
 import '../widgets/snackbar_widget.dart';
+import 'contact/contact_page.dart';
 
 class SignInPage extends StatelessWidget {
   SignInPage({super.key});
@@ -21,7 +23,7 @@ class SignInPage extends StatelessWidget {
     String email = emailController.text.trim();
     //
 
-    if (email.isEmpty || password.length < 6 || !GetUtils.isEmail(email) ) {
+    if (email.isEmpty || password.length < 6 || !GetUtils.isEmail(email)) {
       CustomSnackbar.showSnackbar(description: "Please fill the box Correctly");
     } else {
       await Get.find<AuthRepoController>()
@@ -33,9 +35,9 @@ class SignInPage extends StatelessWidget {
               isError: !status.success,
               title: "Welcome");
 
+          Get.off(() => ContactPage());
+          await Get.find<ChatRepoController>().loadAllGroups();
 
-          // await Get.find<AuthRepoController>().getUser();
-          // await Get.find<UserRepoController>().getUserInfo();
 
           // Navigator.pushReplacementNamed(context, Routeshelper.getFoodHomePageRoute(0));
         } else {
@@ -110,5 +112,4 @@ class SignInPage extends StatelessWidget {
       ),
     );
   }
-
 }

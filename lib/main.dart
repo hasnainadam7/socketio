@@ -6,7 +6,7 @@ import 'package:scoketio/app/utils/colors.dart';
 import 'app/data/controllers/auth_repo_controller.dart';
 import 'app/data/controllers/chat_repo_controller.dart';
 import 'app/data/helper/dependency.dart' as dep;
-import 'app/pages/contactlist/contact_page.dart';
+import 'app/pages/contact/contact_page.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,3 +41,4 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+

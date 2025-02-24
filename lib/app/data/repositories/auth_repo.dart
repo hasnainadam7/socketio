@@ -52,12 +52,15 @@ class AuthRepo {
     Response res = await apiClient
         .postData(Constants.authFetchLoggedUserApi, {"refreshToken": token});
 
-
     return res;
   }
 
   Future<String> getToken() async {
     return await secureStorage.read(key: Constants.token) ?? "";
+  }
+
+  Future<void> removeToken() async {
+    return await secureStorage.delete(key: Constants.token);
   }
 
   //done
